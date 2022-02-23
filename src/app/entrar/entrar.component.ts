@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment.prod';
 import { UserLogin } from '../model/UserLogin';
 import { AuthService } from '../service/auth.service';
 
@@ -27,12 +28,16 @@ export class EntrarComponent implements OnInit {
   entrar() {
     this.auth.entrar(this.userLogin).subscribe((resp: UserLogin) => {
       this.userLogin = resp
-      this.router.navigate(["/inicio"])
 
+      environment.foto = this.userLogin.foto
+      environment.nome = this.userLogin.nome
+      environment.id = this.userLogin.id
+      environment.token = this.userLogin.token
+
+      this.router.navigate(["/inicio"])
     }, erro => {
       if (erro.status == 500) {
         alert("Usuário ou senhas incorretas!")
-
 
       }
     })
